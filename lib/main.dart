@@ -7,10 +7,33 @@ import '../models/transaction.dart';
 main() => runApp(ExpensesApp());
 
 class ExpensesApp extends StatelessWidget {
+  final ThemeData tema = ThemeData();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MyHomePage(),
+      theme: tema.copyWith(
+        colorScheme: tema.colorScheme.copyWith(
+          primary: Colors.purple,
+          secondary: Colors.amber,
+        ),
+        textTheme: tema.textTheme.copyWith(
+          headline6: TextStyle(
+            fontFamily: 'Quicksand',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -21,8 +44,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _transactions = [
-    Transaction(
+  final List<Transaction> _transactions = [
+    /*Transaction(
       id: 't1',
       title: 'Novo tênis corrida',
       value: 310.76,
@@ -33,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
       title: 'Conta de luz',
       value: 211.79,
       date: DateTime.now(),
-    )
+    )*/
   ];
 
   _addTransaciton(String title, double value) {
