@@ -1,6 +1,8 @@
-import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'dart:math';
+import './components/transaction_form.dart';
+import './components/transaction_list.dart';
+import '../models/transaction.dart';
 
 main() => runApp(ExpensesApp());
 
@@ -13,18 +15,20 @@ class ExpensesApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final titleControler = TextEditingController();
-  final valueControler = TextEditingController();
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
+class _MyHomePageState extends State<MyHomePage> {
   final _transactions = [
-    Transation(
+    Transaction(
       id: 't1',
       title: 'Novo tênis corrida',
       value: 310.76,
       date: DateTime.now(),
     ),
-    Transation(
+    Transaction(
       id: 't2',
       title: 'Conta de luz',
       value: 211.79,
@@ -32,115 +36,61 @@ class MyHomePage extends StatelessWidget {
     )
   ];
 
+  _addTransaciton(String title, double value) {
+    final newTransaction = Transaction(
+      id: Random().nextDouble.toString(),
+      title: title,
+      value: value,
+      date: DateTime.now(),
+    );
+
+    setState(() {
+      _transactions.add(newTransaction);
+    });
+
+    Navigator.of(context).pop();
+  }
+
+  _openTransactionFormModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return TransactionForm(_addTransaciton);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Despesas Pessoais"),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Card(
-            child: Text("Gráfico"),
-            elevation: 5,
-          ),
-          Column(
-            children: _transactions.map(
-              (tr) {
-                return Card(
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.purple,
-                            width: 2,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'R\$ ${tr.value.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.purple,
-                          ),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            tr.title,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            DateFormat('d MMM y').format(tr.date),
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ).toList(),
-          ),
-          Card(
-            elevation: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: <Widget>[
-                  TextField(
-                    controller: titleControler,
-                    decoration: InputDecoration(
-                      label: Text("Título"),
-                    ),
-                  ),
-                  TextField(
-                    controller: valueControler,
-                    decoration: InputDecoration(
-                      label: Text("Valor (R\$)"),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      ElevatedButton(
-                        child: Text(
-                          "Nova transação",
-                          style: TextStyle(
-                            color: Colors.purple,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          elevation: 0,
-                        ),
-                        onPressed: () {
-                          print(titleControler.text);
-                          print(valueControler.text);
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => _openTransactionFormModal(context),
           )
         ],
       ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              child: Card(
+                child: Text("Gráfico"),
+                elevation: 5,
+              ),
+            ),
+            TransactionList(_transactions)
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _openTransactionFormModal(context),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
