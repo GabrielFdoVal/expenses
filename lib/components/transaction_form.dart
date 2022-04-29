@@ -45,65 +45,72 @@ class _TransactionFormState extends State<TransactionForm> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Card(
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _titleControler,
-              decoration: InputDecoration(
-                label: Text("Título"),
-              ),
-              onSubmitted: (_) => _submitForm(),
-            ),
-            TextField(
-              controller: _valueControler,
-              decoration: InputDecoration(
-                label: Text("Valor (R\$)"),
-              ),
-              keyboardType: TextInputType.numberWithOptions(
-                decimal: true,
-              ),
-              onSubmitted: (_) => _submitForm(),
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    _selectedDate == null
-                        ? "Nenhuma date selecionada"
-                        : "Data selecionada: ${DateFormat('d/MM/y').format(
-                            _selectedDate,
-                          )}",
-                  ),
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 10,
+            right: 10,
+            left: 10,
+            bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                controller: _titleControler,
+                decoration: InputDecoration(
+                  label: Text("Título"),
                 ),
-                TextButton(
-                  child: Text(
-                    "Nova transação",
-                    style: TextStyle(
-                      color: Colors.purple,
-                      fontWeight: FontWeight.bold,
+                onSubmitted: (_) => _submitForm(),
+              ),
+              TextField(
+                controller: _valueControler,
+                decoration: InputDecoration(
+                  label: Text("Valor (R\$)"),
+                ),
+                keyboardType: TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                onSubmitted: (_) => _submitForm(),
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      _selectedDate == null
+                          ? "Nenhuma date selecionada"
+                          : "Data selecionada: ${DateFormat('d/MM/y').format(
+                              _selectedDate,
+                            )}",
                     ),
                   ),
-                  onPressed: _showDatePicker,
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                ElevatedButton(
-                  child: Text(
-                    "Nova transação",
-                    style: Theme.of(context).textTheme.button,
+                  TextButton(
+                    child: Text(
+                      "Nova transação",
+                      style: TextStyle(
+                        color: Colors.purple,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: _showDatePicker,
                   ),
-                  onPressed: _submitForm,
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  ElevatedButton(
+                    child: Text(
+                      "Nova transação",
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                    onPressed: _submitForm,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
