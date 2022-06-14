@@ -7,8 +7,11 @@ import './components/transaction_list.dart';
 import './components/chart.dart';
 import '../models/transaction.dart';
 
-main() => runApp(ExpensesApp());
+main() {
+  runApp(ExpensesApp());
+}
 
+//=> runApp(ExpensesApp())
 class ExpensesApp extends StatelessWidget {
   final ThemeData tema = ThemeData();
 
@@ -22,23 +25,23 @@ class ExpensesApp extends StatelessWidget {
           secondary: Colors.amber,
         ),
         textTheme: tema.textTheme.copyWith(
-            headline2: TextStyle(
+            headline2: const TextStyle(
               fontFamily: 'Quicksand',
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
-            headline1: TextStyle(
+            headline1: const TextStyle(
               fontFamily: 'Quicksand',
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
-            button: TextStyle(
-              color: Colors?.white,
+            button: const TextStyle(
+              color: Colors.white,
               fontWeight: FontWeight.bold,
             )),
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 20,
@@ -62,13 +65,13 @@ class _MyHomePageState extends State<MyHomePage> {
       id: 't1',
       title: 'Novo tênis corrida',
       value: 310.76,
-      date: DateTime.now().subtract(Duration(days: 2)),
+      date: DateTime.now().subtract(const Duration(days: 2)),
     ),
     Transaction(
       id: 't2',
       title: 'Conta de luz',
       value: 211.79,
-      date: DateTime.now().subtract(Duration(days: 4)),
+      date: DateTime.now().subtract(const Duration(days: 4)),
     )
   ];
   bool _showChart = false;
@@ -76,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
       return tr.date.isAfter(DateTime.now().subtract(
-        Duration(
+        const Duration(
           days: 7,
         ),
       ));
@@ -195,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Platform.isIOS
         ? CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
-              middle: Text('Despesas Pessoais'),
+              middle: const Text('Despesas Pessoais'),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: actions,
@@ -209,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
             floatingActionButton: Platform.isIOS
                 ? Container()
                 : FloatingActionButton(
-                    child: Icon(Icons.add),
+                    child: const Icon(Icons.add),
                     onPressed: () => _openTransactionFormModal(context),
                   ),
             floatingActionButtonLocation:
